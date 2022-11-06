@@ -24,7 +24,8 @@ function getRecipesFromStorage() {
   // A9. TODO - Complete the functionality as described in this function
   //           header. It is possible in only a single line, but should
   //           be no more than a few lines.
-}
+  return (JSON.parse(localStorage.getItem('recipes') == null)) ? [] : JSON.parse(localStorage.getItem('recipes'));
+} 
 
 /**
  * Takes in an array of recipes and for each recipe creates a
@@ -35,10 +36,16 @@ function getRecipesFromStorage() {
  */
 function addRecipesToDocument(recipes) {
   // A10. TODO - Get a reference to the <main> element
+  const mainReference = document.querySelector('main');
   // A11. TODO - Loop through each of the recipes in the passed in array,
   //            create a <recipe-card> element for each one, and populate
   //            each <recipe-card> with that recipe data using element.data = ...
   //            Append each element to <main>
+  for (let element = 0; element < recipes.length; element++) {
+    const recipeCard = document.createElement('recipe-card');
+    recipeCard.data = recipes[element];
+    mainReference.append(recipeCard);
+  }
 }
 
 /**
@@ -51,6 +58,7 @@ function saveRecipesToStorage(recipes) {
   // B1. TODO - Complete the functionality as described in this function
   //            header. It is possible in only a single line, but should
   //            be no more than a few lines.
+  localStorage.setItem('recipes', JSON.stringify(recipes));
 }
 
 /**
@@ -58,28 +66,53 @@ function saveRecipesToStorage(recipes) {
  * <button>.
  */
 function initFormHandler() {
-
   // B2. TODO - Get a reference to the <form> element
-  
+  const formReference = document.querySelector('form');
   // B3. TODO - Add an event listener for the 'submit' event, which fires when the
   //            submit button is clicked
-
+  formReference.addEventListener("submit", e => {
   // Steps B4-B9 will occur inside the event listener from step B3
   // B4. TODO - Create a new FormData object from the <form> element reference above
+  const formData = new FormData(formReference);
   // B5. TODO - Create an empty object (I'll refer to this object as recipeObject to
   //            make this easier to read), and then extract the keys and corresponding
   //            values from the FormData object and insert them into recipeObject
+    const recipeObject = {};
+
+    /* const keys = formData.keys();
+    const value = formData.keys.values;
+    console.log(FormData)
+    Object.assign(recipeObject,formData); 
+    for (let i = 0; i < keys.length; i++) {
+      recipeObject[keys[i]] = values[i];
+    }  */
+    for (let pair of formData) {
+      recipeObject[`${pair[0]}`] = `${pair[1]}`;
+    }
+
   // B6. TODO - Create a new <recipe-card> element
+    const recipeElement = document.createElement('recipe-card');
   // B7. TODO - Add the recipeObject data to <recipe-card> using element.data
+    recipeElement.data = recipeObject;
   // B8. TODO - Append this new <recipe-card> to <main>
+    const mainReference = document.querySelector('main');
+    mainReference.append(recipeElement);
   // B9. TODO - Get the recipes array from localStorage, add this new recipe to it, and
   //            then save the recipes array back to localStorage
-
-  // B10. TODO - Get a reference to the "Clear Local Storage" button
-  // B11. TODO - Add a click event listener to clear local storage button
+    const getRecipes = getRecipesFromStorage();
+    //getRecipes.addRecipesToDocument(recipeObject);
+    getRecipes.push(recipeObject);
+    saveRecipesToStorage(getRecipes);
+  });
   
+  // B10. TODO - Get a reference to the "Clear Local Storage" button
+  const clearStorage = document.querySelector("button[class='danger']");
+  // B11. TODO - Add a click event listener to clear local storage button
+  clearStorage.addEventListener("click", e => {
   // Steps B12 & B13 will occur inside the event listener from step B11
   // B12. TODO - Clear the local storage
+  localStorage.clear();
   // B13. TODO - Delete the contents of <main>
-
+  document.querySelector("main").innerHTML = "";
+  });
 }
