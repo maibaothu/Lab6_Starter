@@ -17,22 +17,6 @@ class RecipeCard extends HTMLElement {
     styleElement.textContent = `
     * {
       font-family: sans-serif;
-  // Called once when document.createElement('recipe-card') is called, or
-  // the element is written into the DOM directly as <recipe-card>
-  constructor() {
-    super(); // Inheret everything from HTMLElement
-
-    // EXPOSE - START (All expose numbers start with A)
-    // A1. TODO - Attach the shadow DOM to this Web Component (leave the mode open)
-    const shadow = this.attachShadow({ mode: "open" });
-    // A2. TODO - Create an <article> element - This will hold our markup once our data is set
-    let articleElement = document.createElement('article');
-    // A3. TODO - Create a style element - This will hold all of the styles for the Web Component
-    let styleElement = document.createElement('style');
-    // A4. TODO - Insert all of the styles from cardTemplate.html into the <style> element you just made
-    styleElement.textContent = `
-    * {
-      font-family: sans-serif;
       margin: 0;
       padding: 0;
     }
@@ -106,7 +90,6 @@ class RecipeCard extends HTMLElement {
       color: #70757A;
       font-size: 12px;
     }
-
     `
     // A5. TODO - Append the <style> and <article> elements to the Shadow DOM
     shadow.append(articleElement);
@@ -153,7 +136,7 @@ class RecipeCard extends HTMLElement {
     <p class="organization">${data.organization}</p>
     <div class="rating">
       <span>${data.rating}</span>
-      <img src="/assets/images/icons/${data.rating}-star.svg" alt="${data.rating} stars">
+      <img src="Lab6_Starter/assets/images/icons/${data.rating}-star.svg" alt="${data.rating} stars">
       <span>${data.numRatings}</span>
     </div>
     <time>${data.lengthTime}</time>
